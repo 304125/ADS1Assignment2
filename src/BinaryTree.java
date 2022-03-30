@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class BinaryTree<E> {
@@ -96,12 +97,41 @@ public class BinaryTree<E> {
         list.add(node.getElement());
     }
     public ArrayList<E> levelOrderMaggie(){
+        BinaryTreeNode[] nodeArray = new BinaryTreeNode[(int)Math.pow(2, height()+1)];
+        if(root != null){
+            nodeArray[0] = root;
+        }
+        int position = 1;
+        while(getArrayListLength(nodeArray) < size){
+            double parentPosition = ((double)position-1)/2;
+            if(nodeArray[(int)parentPosition] != null){
+                //if ends by .0 = left child
+                if(parentPosition*10%10 == 0){
+                    nodeArray[position] = nodeArray[(int)parentPosition].getLeftChild();
+                }
+                //if ends by .5 = right child
+                else{
+                    nodeArray[position] = nodeArray[(int)parentPosition].getRightChild();
+                }
 
+            }
+            position++;
+        }
     }
 
-    public ArrayList<E> levelOrderKim(){
-
+    private int getArrayListLength(BinaryTreeNode[] array){
+        int count = 0;
+        for (int i = 0; i < array.length; i++) {
+            if(array[i] != null){
+                count++;
+            }
+        }
+        return count;
     }
+
+    /*public ArrayList<E> levelOrderKim(){
+
+    }*/
 
     public int height(){
         int height = 0;
