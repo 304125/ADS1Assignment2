@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public class BinaryTree<E> {
     private BinaryTreeNode<E> root;
@@ -96,11 +97,16 @@ public class BinaryTree<E> {
         list.add(node.getElement());
     }
     public ArrayList<E> levelOrderMaggie(){
-
+        return null;
     }
 
     public ArrayList<E> levelOrderKim(){
+        //BinaryTreeNode<E>[] order = new BinaryTreeNode<E>[];
 
+        // ArrayList<E> order = new ArrayList<>();
+        // E element = null;
+        //order.add(2, element);
+        return null;
     }
 
     public int height(){
