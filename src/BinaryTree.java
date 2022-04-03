@@ -43,7 +43,7 @@ public class BinaryTree<E> {
         if(node.getElement().equals(element)){
             return true;
         }
-        if(node.getRightChild() != null || node.getElement() < element)
+        if(node.getRightChild() != null)
             return contains(node.getRightChild(), element);
         if(node.getLeftChild() != null)
             return contains(node.getLeftChild(), element);

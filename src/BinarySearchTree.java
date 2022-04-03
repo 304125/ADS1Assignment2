@@ -2,23 +2,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BinarySearchTree<E extends Comparable<? super E>> extends BinaryTree<E> {
-    private BinarySearchTreeNode<E> root;
+    //private BinarySearchTreeNode<E> root;
 
     public BinarySearchTree(BinarySearchTreeNode<E> root) {
         super(root);
-        this.root = root;
+        //this.root = root;
     }
 
-    public BinarySearchTreeNode<E> getRoot(){
-        return root;
+    public BinarySearchTree(E element) {
+        super(new BinarySearchTreeNode<>(element));
+        //this.root = new BinarySearchTreeNode<>(element);
     }
+
+//    public BinarySearchTreeNode<E> getRoot(){
+//        return root;
+//    }
 
     public boolean insert(E element){
-        if (root  == null){
-            root = new BinarySearchTreeNode<>(element);
+        if (getRoot() == null){
+            super.setRoot(new BinarySearchTreeNode<>(element));
             return true;
         }
-        return insert(element, root);
+        return insert(element, (BinarySearchTreeNode<E>) getRoot());
     }
 
     private boolean insert(E element, BinarySearchTreeNode<E> node){
@@ -28,7 +33,7 @@ public class BinarySearchTree<E extends Comparable<? super E>> extends BinaryTre
         }
         else if(comparison < 0){
             if(node.getRightChild() != null){
-                return insert(element, node.getRightChild());
+                return insert(element, (BinarySearchTreeNode<E>) node.getRightChild());
             }
             else{
                 node.addRightChild(new BinarySearchTreeNode<>(element));
@@ -37,7 +42,7 @@ public class BinarySearchTree<E extends Comparable<? super E>> extends BinaryTre
         }
         else{
             if(node.getLeftChild() != null){
-                return insert(element, node.getLeftChild());
+                return insert(element, (BinarySearchTreeNode<E>) node.getLeftChild());
             }
             else{
                 node.addLeftChild(new BinarySearchTreeNode<>(element));
@@ -52,21 +57,22 @@ public class BinarySearchTree<E extends Comparable<? super E>> extends BinaryTre
         /*if (!this.contains(element))
             return false;*/
         // Check if root contains element to remove
+        BinarySearchTreeNode<E> root = (BinarySearchTreeNode<E>) super.getRoot();
         if (root.getElement().equals(element)){
             // If root has left child do following
             if (root.getLeftChild() != null){
                 // If roots left child has no right child use that as a replacement root
                 if (root.getLeftChild().getRightChild() == null){
                     root.getLeftChild().addRightChild(root.getRightChild());
-                    root = root.getLeftChild();
+                    root = (BinarySearchTreeNode<E>) root.getLeftChild();
                     return true;
                 }
                 else{
                     // Find the parent of the node containing the highest element in roots left subtree
-                    BinarySearchTreeNode<E> maxParent = removeFindMaxParent(root.getLeftChild());
+                    BinarySearchTreeNode<E> maxParent = removeFindMaxParent((BinarySearchTreeNode<E>) root.getLeftChild());
                     BinarySearchTreeNode<E> tmpRoot = root;
                     // Node with highest value gets set to root
-                    root = maxParent.getRightChild();
+                    root = (BinarySearchTreeNode<E>) maxParent.getRightChild();
                     // Previous parent of the highest value node gets all the left children
                     // from the highest value node
                     maxParent.addRightChild(root.getLeftChild());
@@ -81,15 +87,15 @@ public class BinarySearchTree<E extends Comparable<? super E>> extends BinaryTre
                 // If roots right child has no left child use that as a replacement root
                 if (root.getRightChild().getLeftChild() == null){
                     root.getRightChild().addLeftChild(root.getLeftChild());
-                    root = root.getRightChild();
+                    root = (BinarySearchTreeNode<E>) root.getRightChild();
                     return true;
                 }
                 else{
                     // Find the parent of the node containing the lowest element in roots right subtree
-                    BinarySearchTreeNode<E> minParent = removeFindMinParent(root.getRightChild());
+                    BinarySearchTreeNode<E> minParent = removeFindMinParent((BinarySearchTreeNode<E>) root.getRightChild());
                     BinarySearchTreeNode<E> tmpRoot = root;
                     // Node with lowest value gets set to root
-                    root = minParent.getLeftChild();
+                    root = (BinarySearchTreeNode<E>) minParent.getLeftChild();
                     // Previous parent of the lowest value node gets all the right children
                     // from the lowest value node
                     minParent.addLeftChild(root.getRightChild());
@@ -115,7 +121,7 @@ public class BinarySearchTree<E extends Comparable<? super E>> extends BinaryTre
             // Check if left child contains the element
             if (node.getLeftChild().getElement().equals(element)) {
                 // Node that needs to be removed
-                BinarySearchTreeNode<E> toRemove = node.getLeftChild();
+                BinarySearchTreeNode<E> toRemove = (BinarySearchTreeNode<E>) node.getLeftChild();
                 // Check if node has any children, if not parents left child just points to null
                 if (toRemove.getRightChild() == null && toRemove.getLeftChild() == null) {
                     node.addLeftChild(null);
@@ -130,9 +136,9 @@ public class BinarySearchTree<E extends Comparable<? super E>> extends BinaryTre
                 }
                 else{
                     // Find parent of node with max value in toRemoves left subtree
-                    BinarySearchTreeNode<E> maxParent = removeFindMaxParent(toRemove.getLeftChild());
+                    BinarySearchTreeNode<E> maxParent = removeFindMaxParent((BinarySearchTreeNode<E>) toRemove.getLeftChild());
                     // Node with max value
-                    BinarySearchTreeNode<E> max = maxParent.getRightChild();
+                    BinarySearchTreeNode<E> max = (BinarySearchTreeNode<E>) maxParent.getRightChild();
                     // Shuffle
                     node.addLeftChild(max);
                     maxParent.addRightChild(max.getLeftChild());
@@ -145,7 +151,7 @@ public class BinarySearchTree<E extends Comparable<? super E>> extends BinaryTre
             // if element is smaller than nodes element
             // recursively remove on nodes left subtree
             if (node.getElement().compareTo(element) > 0) {
-                return removeElement(element, node.getLeftChild());
+                return removeElement(element, (BinarySearchTreeNode<E>) node.getLeftChild());
             }
         }
         // Check if node has right child
@@ -153,7 +159,7 @@ public class BinarySearchTree<E extends Comparable<? super E>> extends BinaryTre
             // Check if right child contains the element
             if (node.getRightChild().getElement().equals(element)) {
                 // Node that needs to be removed
-                BinarySearchTreeNode<E> toRemove = node.getRightChild();
+                BinarySearchTreeNode<E> toRemove = (BinarySearchTreeNode<E>) node.getRightChild();
                 // Check if node has any children, if not parents right child just points to null
                 if (toRemove.getRightChild() == null && toRemove.getLeftChild() == null) {
                     node.addRightChild(null);
@@ -168,9 +174,9 @@ public class BinarySearchTree<E extends Comparable<? super E>> extends BinaryTre
                 }
                 else{
                     // Find parent of node with min value in toRemoves right subtree
-                    BinarySearchTreeNode<E> minParent = removeFindMinParent(toRemove.getRightChild());
+                    BinarySearchTreeNode<E> minParent = removeFindMinParent((BinarySearchTreeNode<E>) toRemove.getRightChild());
                     // Node with min value
-                    BinarySearchTreeNode<E> min = minParent.getLeftChild();
+                    BinarySearchTreeNode<E> min = (BinarySearchTreeNode<E>) minParent.getLeftChild();
                     // Shuffle
                     node.addRightChild(min);
                     minParent.addLeftChild(min.getRightChild());
@@ -182,7 +188,7 @@ public class BinarySearchTree<E extends Comparable<? super E>> extends BinaryTre
             // if element is larger than nodes element
             // recursively remove on nodes right subtree
             if (node.getElement().compareTo(element) < 0) {
-                return removeElement(element, node.getRightChild());
+                return removeElement(element, (BinarySearchTreeNode<E>) node.getRightChild());
             }
         }
         return false;
@@ -194,7 +200,7 @@ public class BinarySearchTree<E extends Comparable<? super E>> extends BinaryTre
             return node;
         }
         else{
-            return removeFindMaxParent(node.getRightChild());
+            return removeFindMaxParent((BinarySearchTreeNode<E>) node.getRightChild());
         }
     }
 
@@ -203,11 +209,12 @@ public class BinarySearchTree<E extends Comparable<? super E>> extends BinaryTre
             return node;
         }
         else{
-            return removeFindMinParent(node.getLeftChild());
+            return removeFindMinParent((BinarySearchTreeNode<E>) node.getLeftChild());
         }
     }
 
     public E findMin(){
+        BinarySearchTreeNode<E> root = (BinarySearchTreeNode<E>) super.getRoot();
         if(root == null){
             return null;
         }
@@ -219,12 +226,13 @@ public class BinarySearchTree<E extends Comparable<? super E>> extends BinaryTre
             return node.getElement();
         }
         else{
-            return findMin(node.getLeftChild());
+            return findMin((BinarySearchTreeNode<E>) node.getLeftChild());
         }
     }
 
 
     public E findMax(){
+        BinarySearchTreeNode<E> root = (BinarySearchTreeNode<E>) super.getRoot();
         if(root == null){
             return null;
         }
@@ -236,12 +244,13 @@ public class BinarySearchTree<E extends Comparable<? super E>> extends BinaryTre
             return node.getElement();
         }
         else{
-            return findMax(node.getRightChild());
+            return findMax((BinarySearchTreeNode<E>) node.getRightChild());
         }
     }
 
     public boolean contains(E element){
-        return contains(element, root);
+
+        return contains(element, (BinarySearchTreeNode<E>) super.getRoot());
     }
 
     private boolean contains(E element, BinarySearchTreeNode<E> node){
@@ -254,7 +263,7 @@ public class BinarySearchTree<E extends Comparable<? super E>> extends BinaryTre
                     return false;
                 }
                 else{
-                    return contains(element, node.getLeftChild());
+                    return contains(element, (BinarySearchTreeNode<E>) node.getLeftChild());
                 }
             }
             else{
@@ -262,18 +271,18 @@ public class BinarySearchTree<E extends Comparable<? super E>> extends BinaryTre
                     return false;
                 }
                 else{
-                    return contains(element, node.getRightChild());
+                    return contains(element, (BinarySearchTreeNode<E>) node.getRightChild());
                 }
             }
         }
     }
 
     public void rebalance(){
-        if (root == null){
+        if (super.getRoot() == null){
             return;
         }
         List<E> sortedArray = this.inOrder();
-        root=null;
+        super.setRoot(null);
         rebalance(sortedArray);
     }
 

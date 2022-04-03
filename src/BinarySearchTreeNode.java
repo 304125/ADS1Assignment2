@@ -1,15 +1,14 @@
 public class BinarySearchTreeNode<E extends Comparable<? super E>> extends BinaryTreeNode<E>{
-    private E element;
-    private BinarySearchTreeNode<E> rightChild;
-    private BinarySearchTreeNode<E> leftChild;
+    //private E element;
+    //private BinarySearchTreeNode<E> rightChild;
+    //private BinarySearchTreeNode<E> leftChild;
 
     public BinarySearchTreeNode(E element){
-        super();
-        this.element = element;
+        super(element);
+        //this.element = element;
     }
 
-    @Override
-    public E getElement(){
+    /*public E getElement(){
         return element;
     }
 
@@ -30,5 +29,5 @@ public class BinarySearchTreeNode<E extends Comparable<? super E>> extends Binar
         return rightChild;
     }
 
-
+*/
 }

@@ -2,6 +2,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BinarySearchTreeTest {
@@ -151,5 +153,24 @@ public class BinarySearchTreeTest {
         tree.rebalance();
         print.printTree(tree.getRoot());
         assertEquals(setUpTree().inOrder(), tree.inOrder());
+    }
+
+    @Test
+    public void rebalanceLeftHeavyTree(){
+        BinarySearchTree<Integer> tree = new BinarySearchTree<>(23);
+        tree.insert(19);
+        tree.insert(17);
+        tree.insert(15);
+        tree.insert(13);
+        tree.insert(12);
+        tree.insert(10);
+        tree.insert(8);
+        tree.insert(5);
+        tree.insert(2);
+        print.printTree(tree.getRoot());
+        List<Integer> list = Arrays.asList(2,5,8,10,12,13,15,17,19,23);
+        tree.rebalance();
+        print.printTree(tree.getRoot());
+        assertEquals(list, tree.inOrder());
     }
 }
