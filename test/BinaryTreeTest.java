@@ -71,7 +71,7 @@ public class BinaryTreeTest {
             nodes.get(i).addRightChild(nodes.get(2*(i+1)));
         }
         BinaryTree<Integer> bt = new BinaryTree<>(nodes.get(0));
-        assertTrue(bt.contains(8));
+        assertTrue(bt.contains(3));
     }
 
     @Test
@@ -119,7 +119,7 @@ public class BinaryTreeTest {
         numbers.add(7);
 
         BinaryTree<Integer> bt = new BinaryTree<>(nodes.get(0));
-        assertEquals(numbers, bt.preOrder());
+        assertEquals(numbers, bt.inOrder());
     }
 
     @Test
@@ -176,18 +176,18 @@ public class BinaryTreeTest {
 
         numbers.add(8);
         numbers.add(9);
+        numbers.add(4);
         numbers.add(10);
         numbers.add(11);
-        numbers.add(4);
         numbers.add(5);
+        numbers.add(2);
         numbers.add(6);
         numbers.add(7);
-        numbers.add(2);
         numbers.add(3);
         numbers.add(1);
 
         BinaryTree<Integer> bt = new BinaryTree<>(nodes.get(0));
-        assertEquals(numbers, bt.preOrder());
+        assertEquals(numbers, bt.postOrder());
     }
 
     @Test
