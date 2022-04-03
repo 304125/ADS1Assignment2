@@ -47,66 +47,84 @@ public class BinarySearchTree<E extends Comparable<? super E>> extends BinaryTre
     }
 
     public boolean removeElement(E element){
-        if (!this.contains(element))
-            return false;
+        // Check if tree even contains the element
+        // Can maybe be removed to optimize the code
+        /*if (!this.contains(element))
+            return false;*/
+        // Check if root contains element to remove
         if (root.getElement().equals(element)){
+            // If root has left child do following
             if (root.getLeftChild() != null){
+                // If roots left child has no right child use that as a replacement root
                 if (root.getLeftChild().getRightChild() == null){
                     root.getLeftChild().addRightChild(root.getRightChild());
                     root = root.getLeftChild();
                     return true;
                 }
                 else{
+                    // Find the parent of the node containing the highest element in roots left subtree
                     BinarySearchTreeNode<E> maxParent = removeFindMaxParent(root.getLeftChild());
                     BinarySearchTreeNode<E> tmpRoot = root;
+                    // Node with highest value gets set to root
                     root = maxParent.getRightChild();
+                    // Previous parent of the highest value node gets all the left children
+                    // from the highest value node
                     maxParent.addRightChild(root.getLeftChild());
+                    // New root gets the previous roots children
                     root.addLeftChild(tmpRoot.getLeftChild());
                     root.addRightChild(tmpRoot.getRightChild());
                     return true;
                 }
             }
+            // If root has right child do following
             else if (root.getRightChild() != null){
+                // If roots right child has no left child use that as a replacement root
                 if (root.getRightChild().getLeftChild() == null){
                     root.getRightChild().addLeftChild(root.getLeftChild());
                     root = root.getRightChild();
                     return true;
                 }
                 else{
+                    // Find the parent of the node containing the lowest element in roots right subtree
                     BinarySearchTreeNode<E> minParent = removeFindMinParent(root.getRightChild());
                     BinarySearchTreeNode<E> tmpRoot = root;
+                    // Node with lowest value gets set to root
                     root = minParent.getLeftChild();
+                    // Previous parent of the lowest value node gets all the right children
+                    // from the lowest value node
                     minParent.addLeftChild(root.getRightChild());
+                    // New root gets the previous roots children
                     root.addLeftChild(tmpRoot.getLeftChild());
                     root.addRightChild(tmpRoot.getRightChild());
                     return true;
                 }
             }
+            // If the tree has only one node set root to null
             else{
                 root = null;
                 return true;
             }
         }
+        // Recursively try to find location of element and remove it
         return removeElement(element, root);
     }
 
     private boolean removeElement(E element, BinarySearchTreeNode<E> node){
-        BinarySearchTreeNode<E> parent = node;
-        // Check if parent has left child
-        if (parent.getLeftChild() != null) {
+        // Check if node has left child
+        if (node.getLeftChild() != null) {
             // Check if left child contains the element
-            if (parent.getLeftChild().getElement().equals(element)) {
+            if (node.getLeftChild().getElement().equals(element)) {
                 // Node that needs to be removed
-                BinarySearchTreeNode<E> toRemove = parent.getLeftChild();
+                BinarySearchTreeNode<E> toRemove = node.getLeftChild();
                 // Check if node has any children, if not parents left child just points to null
                 if (toRemove.getRightChild() == null && toRemove.getLeftChild() == null) {
-                    parent.addLeftChild(null);
+                    node.addLeftChild(null);
                     return true;
                 }
                 // Check if node toRemoves left child has a right child
                 // if not the replacement node is toRemoves left child
                 if (toRemove.getLeftChild().getRightChild() == null){
-                    parent.addLeftChild(toRemove.getLeftChild());
+                    node.addLeftChild(toRemove.getLeftChild());
                     toRemove.getLeftChild().addRightChild(toRemove.getRightChild());
                     return true;
                 }
@@ -116,7 +134,7 @@ public class BinarySearchTree<E extends Comparable<? super E>> extends BinaryTre
                     // Node with max value
                     BinarySearchTreeNode<E> max = maxParent.getRightChild();
                     // Shuffle
-                    parent.addLeftChild(max);
+                    node.addLeftChild(max);
                     maxParent.addRightChild(max.getLeftChild());
                     max.addRightChild(toRemove.getRightChild());
                     max.addLeftChild(toRemove.getLeftChild());
@@ -124,25 +142,27 @@ public class BinarySearchTree<E extends Comparable<? super E>> extends BinaryTre
                 }
 
             }
-            if (parent.getElement().compareTo(element) > 0) {
-                return removeElement(element, parent.getLeftChild());
+            // if element is smaller than nodes element
+            // recursively remove on nodes left subtree
+            if (node.getElement().compareTo(element) > 0) {
+                return removeElement(element, node.getLeftChild());
             }
         }
-        // Check if parent has right child
-        if (parent.getRightChild() != null) {
+        // Check if node has right child
+        if (node.getRightChild() != null) {
             // Check if right child contains the element
-            if (parent.getRightChild().getElement().equals(element)) {
+            if (node.getRightChild().getElement().equals(element)) {
                 // Node that needs to be removed
-                BinarySearchTreeNode<E> toRemove = parent.getRightChild();
+                BinarySearchTreeNode<E> toRemove = node.getRightChild();
                 // Check if node has any children, if not parents right child just points to null
                 if (toRemove.getRightChild() == null && toRemove.getLeftChild() == null) {
-                    parent.addRightChild(null);
+                    node.addRightChild(null);
                     return true;
                 }
                 // Check if node toRemoves right child has a left child
                 // if not the replacement node is toRemoves right child
                 if (toRemove.getRightChild().getLeftChild() == null){
-                    parent.addRightChild(toRemove.getRightChild());
+                    node.addRightChild(toRemove.getRightChild());
                     toRemove.getRightChild().addLeftChild(toRemove.getLeftChild());
                     return true;
                 }
@@ -152,15 +172,17 @@ public class BinarySearchTree<E extends Comparable<? super E>> extends BinaryTre
                     // Node with min value
                     BinarySearchTreeNode<E> min = minParent.getLeftChild();
                     // Shuffle
-                    parent.addRightChild(min);
+                    node.addRightChild(min);
                     minParent.addLeftChild(min.getRightChild());
                     min.addRightChild(toRemove.getRightChild());
                     min.addLeftChild(toRemove.getLeftChild());
                     return true;
                 }
             }
-            if (parent.getElement().compareTo(element) < 0) {
-                return removeElement(element, parent.getRightChild());
+            // if element is larger than nodes element
+            // recursively remove on nodes right subtree
+            if (node.getElement().compareTo(element) < 0) {
+                return removeElement(element, node.getRightChild());
             }
         }
         return false;

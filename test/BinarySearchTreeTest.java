@@ -150,6 +150,6 @@ public class BinarySearchTreeTest {
         print.printTree(tree.getRoot());
         tree.rebalance();
         print.printTree(tree.getRoot());
-        assertFalse(true);
+        assertEquals(setUpTree().inOrder(), tree.inOrder());
     }
 }
