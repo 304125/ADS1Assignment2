@@ -1,7 +1,5 @@
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class BinaryTree<E> {
     private BinaryTreeNode<E> root;
@@ -98,7 +96,9 @@ public class BinaryTree<E> {
         }
         list.add(node.getElement());
     }
+
     public ArrayList<E> levelOrderMaggie(){
+        long start = Calendar.getInstance().getTimeInMillis();
         BinaryTreeNode<E>[] nodeArray = new BinaryTreeNode[(int)Math.pow(2, height()+1)];
         if(root != null){
             nodeArray[0] = root;
@@ -125,6 +125,8 @@ public class BinaryTree<E> {
                 listToReturn.add(binaryTreeNode.getElement());
             }
         }
+        long end = Calendar.getInstance().getTimeInMillis();
+        System.out.println("Maggie time in ms: " +(end-start));
         return listToReturn;
     }
 
@@ -138,9 +140,28 @@ public class BinaryTree<E> {
         return count;
     }
 
-    /*public ArrayList<E> levelOrderKim(){
-
-    }*/
+    public ArrayList<E> levelOrderKim(){
+        long start = Calendar.getInstance().getTimeInMillis();
+        if (root == null){
+            return null;
+        }
+        ArrayDeque<BinaryTreeNode<E>> orderQueue = new ArrayDeque<>();
+        ArrayList<E> orderedArray = new ArrayList<>();
+        orderQueue.add(root);
+        while(!orderQueue.isEmpty()){
+            BinaryTreeNode<E> node = orderQueue.pop();
+            orderedArray.add(node.getElement());
+            if (node.getLeftChild() != null){
+                orderQueue.add(node.getLeftChild());
+            }
+            if (node.getRightChild() != null){
+                orderQueue.add(node.getRightChild());
+            }
+        }
+        long end = Calendar.getInstance().getTimeInMillis();
+        System.out.println("Kim time in ms: " +(end-start));
+        return orderedArray;
+    }
 
     public int height(){
         int height = 0;
