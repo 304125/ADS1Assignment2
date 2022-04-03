@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -6,6 +7,13 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BinaryTreeTest {
+    private static BinaryTreePrint print;
+
+    @BeforeAll
+    public static void setPrint(){
+        print = new BinaryTreePrint();
+    }
+
     @Test
     public void getNullRoot(){
         BinaryTree<Integer> bt = new BinaryTree<>();
@@ -71,7 +79,18 @@ public class BinaryTreeTest {
             nodes.get(i).addRightChild(nodes.get(2*(i+1)));
         }
         BinaryTree<Integer> bt = new BinaryTree<>(nodes.get(0));
+        print.printTree(bt.getRoot());
+        assertTrue(bt.contains(1));
         assertTrue(bt.contains(3));
+        assertTrue(bt.contains(7));
+        assertTrue(bt.contains(2));
+        assertTrue(bt.contains(4));
+        assertTrue(bt.contains(5));
+        assertTrue(bt.contains(6));
+        assertTrue(bt.contains(8));
+        assertTrue(bt.contains(9));
+        assertTrue(bt.contains(10));
+        assertTrue(bt.contains(11));
     }
 
     @Test

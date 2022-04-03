@@ -36,28 +36,24 @@ public class BinaryTree<E> {
         if(root == null){
             return false;
         }
-        ArrayList<Boolean> contains = new ArrayList<>();
-        contains.add(false);
-        contains(root, element, contains);
-        return contains.get(0);
+        return contains(root, element);
     }
 
-    private void contains(BinaryTreeNode<E> node, E element, ArrayList<Boolean> contains){
+    /*private boolean containsKim(BinaryTreeNode<E> node, E element){
         if(node.getElement().equals(element)){
-            contains.set(0, true);
-            return;
+            return true;
         }
-        if(node.getRightChild() != null)
-            contains(node.getRightChild(), element, contains);
+        if(node.getRightChild() != null || node.getElement() < element)
+            return contains(node.getRightChild(), element);
         if(node.getLeftChild() != null)
-            contains(node.getLeftChild(), element, contains);
-        return;
-    }
+            return contains(node.getLeftChild(), element);
+        return false;
+    }*/
 
-    /*private boolean containsMaggie(BinaryTreeNode<E> node, E element){
+    private boolean contains(BinaryTreeNode<E> node, E element){
         ArrayList<E> allNodes = levelOrderKim();
         return allNodes.contains(element);
-    }*/
+    }
 
     public ArrayList<E> inOrder(){
         if(root == null){
@@ -112,10 +108,10 @@ public class BinaryTree<E> {
     }
 
     public ArrayList<E> levelOrderMaggie(){
+        long start = Calendar.getInstance().getTimeInMillis();
         if(root == null){
             return null;
         }
-        long start = Calendar.getInstance().getTimeInMillis();
         BinaryTreeNode<E>[] nodeArray = new BinaryTreeNode[(int)Math.pow(2, height()+1)];
         if(root != null){
             nodeArray[0] = root;
